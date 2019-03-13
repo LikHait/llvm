@@ -1,6 +1,7 @@
 #include "llvm/ADT/Statistic.h"
 #include "llvm/IR/InstrTypes.h"
 #include "llvm/IR/Instructions.h"
+#include "llvm/Analysis/BranchInstCount/BICinit.h"
 #include "llvm/Pass.h"
 
 using namespace llvm;
@@ -25,7 +26,9 @@ class BranchInstCount : public BasicBlockPass {
 
 public:
   static char ID;
-  BranchInstCount() : BasicBlockPass(ID) {}
+  BranchInstCount() : BasicBlockPass(ID) {
+    initializeBranchInstCountPass(*PassRegistry::getPassRegistry());
+  }
 
   virtual bool runOnBasicBlock(BasicBlock &BB) override;
 
@@ -95,8 +98,13 @@ bool BranchInstCount::runOnBasicBlock(BasicBlock &BB) {
 }
 
 char BranchInstCount::ID = 0;
-static RegisterPass<BranchInstCount>
-    X("BranchInstCount",
-      "Count the number of conditional branches and unconditional branches in "
-      "a program",
-      true, true);
+
+INITIALIZE_PASS(
+    BranchInstCount, "BranchInstCount",
+    "Count the number of conditional branches and unconditional branches in "
+    "a program",
+    true, true)
+
+BasicBlockPass *llvm::createBranchInstCountPass() {
+  return new BranchInstCount();
+}
