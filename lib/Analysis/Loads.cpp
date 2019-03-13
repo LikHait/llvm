@@ -23,9 +23,6 @@
 #include "llvm/IR/Operator.h"
 #include "llvm/IR/Statepoint.h"
 
-/* Windows doesn't support modules so it can't be loaded by usual way. */
-#include "BranchInstCount\branchinstcount.cpp"
-
 using namespace llvm;
 
 static bool isAligned(const Value *Base, const APInt &Offset, unsigned Align,

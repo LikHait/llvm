@@ -1,4 +1,4 @@
-add_llvm_library( LLVMBranchInstCount
+add_llvm_library( LLVMBranchInstCount MODULE 
   BranchInstCount.cpp
 
   DEPENDS
